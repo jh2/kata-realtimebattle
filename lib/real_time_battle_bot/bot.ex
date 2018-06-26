@@ -10,7 +10,12 @@ defmodule RealTimeBattleBot.Bot do
       def handle_cast({message, context}, state) do
         #IO.inspect([:cast, {message, context}, state], label: :handle_cast)
 
-        handle_message(message, context, state) #|> IO.inspect(label: :handle_message_return)
+        state =
+          case handle_message(message, context, state) do
+            {:state, new_state} -> new_state
+            _ -> state
+          end
+
         {:noreply, state}
       end
 
